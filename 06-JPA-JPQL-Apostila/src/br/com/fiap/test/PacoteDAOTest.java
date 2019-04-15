@@ -1,8 +1,13 @@
 package br.com.fiap.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.EntityManager;
 
@@ -34,6 +39,19 @@ class PacoteDAOTest {
 	void listarPorTransporte() { 
 		List<Pacote> lista = pacoteDao.listarPorTransporte(em.find(Transporte.class, 1));
 		assertEquals(2, lista.size());
+		
+	}
+	
+	@Test
+	void buscarPacotesPorData() { 
+		Calendar inicio = new GregorianCalendar(2017, Calendar.JANUARY, 1);
+		Calendar fim = new GregorianCalendar(2018, Calendar.JANUARY, 1);
+		
+		List<Pacote> lista = pacoteDao.buscarPorDatas(inicio, fim);
+		for (Pacote pacote : lista) {
+			assertTrue(pacote.getDataSaida().after(inicio) && 
+					pacote.getDataSaida().before(fim));
+		}
 		
 	}
 

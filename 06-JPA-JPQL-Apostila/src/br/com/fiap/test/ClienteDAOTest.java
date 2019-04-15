@@ -2,8 +2,12 @@ package br.com.fiap.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,7 +40,8 @@ class ClienteDAOTest {
 	
 	@Test
 	void listarPorNome() {
-		List<Cliente> lista = dao.listarPorNome("J");
+		List<Cliente> lista = dao.listarPorNome("T");
+		assertNotNull(lista);
 		assertEquals(2, lista.size());
 		
 	}
@@ -44,14 +49,39 @@ class ClienteDAOTest {
 	@Test
 	void listarPorEstado() {
 		List<Cliente> lista = dao.listarPorEstado("SP");
-		assertEquals(1, lista.size());
+		assertNotNull(lista);
+		assertEquals(2, lista.size());
 		
 	}
 	
 	@Test
 	void buscarPorDias() {
 		List<Cliente> lista = dao.listarPorDiasReserva(10);
+		assertNotNull(lista);
+	}
+	
+	@Test
+	void buscarPorNomeCidade() {
+		List<Cliente> lista = dao.buscar("Leandro", "Lon");
+		assertNotNull(lista);
+		for (Cliente cliente : lista) {
+			assertTrue(cliente.getNome().contains("Leandro") && 
+					cliente.getEndereco().getCidade().getNome().contains("Lon"));
+		}
+	}
+	
+	@Test
+	void buscarPorEstados() {
+		List<String> estados = new ArrayList<>();
+		estados.add("SP");
+		estados.add("RS");
+		List<Cliente> lista = dao.buscarPorEstados(estados);
+		assertNotNull(lista);
 		assertEquals(2, lista.size());
+		
+		for (Cliente cliente : lista) {
+			assertTrue(estados.contains(cliente.getEndereco().getCidade().getUf()));
+		}
 	}
 
 }
