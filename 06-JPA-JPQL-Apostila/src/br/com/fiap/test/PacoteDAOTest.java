@@ -1,13 +1,12 @@
 package br.com.fiap.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.EntityManager;
 
@@ -39,7 +38,6 @@ class PacoteDAOTest {
 	void listarPorTransporte() { 
 		List<Pacote> lista = pacoteDao.listarPorTransporte(em.find(Transporte.class, 1));
 		assertEquals(2, lista.size());
-		
 	}
 	
 	@Test
@@ -53,6 +51,12 @@ class PacoteDAOTest {
 					pacote.getDataSaida().before(fim));
 		}
 		
+	}
+	
+	@Test
+	void buscarSomaPrecoQuantidadePorTransporte() {
+		double somaPreco = pacoteDao.somaPrecoPacotesPorTransporte(em.find(Transporte.class, 1));
+		assertNotNull(somaPreco);
 	}
 
 }

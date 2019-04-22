@@ -7,7 +7,6 @@ import javax.persistence.TypedQuery;
 
 import br.com.fiap.dao.ClienteDAO;
 import br.com.fiap.entity.Cliente;
-import br.com.fiap.entity.Reserva;
 
 public class ClienteDAOImpl extends GenericDAOImpl<Cliente, Integer> implements ClienteDAO {
 
@@ -58,6 +57,22 @@ public class ClienteDAOImpl extends GenericDAOImpl<Cliente, Integer> implements 
 		return em.createQuery("from Cliente c where c.endereco.cidade.uf in (:e)", Cliente.class)
 				.setParameter("e", estados)
 				.getResultList();
+	}
+
+	@Override
+	public List<Cliente> buscaNomeSemDiferencia(String nome) {
+		TypedQuery<Cliente> query = em.createQuery("from Cliente c where length(c.nome) like length(:nomeCliente)", Cliente.class);
+		query.setParameter("nomeCliente", "%" + nome + "%");
+
+		return query.getResultList();
+	}
+
+	@Override
+	public int countCliente(String uf) {
+		TypedQuery<Cliente> query = em.createQuery("select count(c) from Cliente c where c.endereco.cidade.uf = :estado",
+				Cliente.class);
+		query.setParameter("estado", uf);
+		return query.getFirstResult();
 	}
 
 }

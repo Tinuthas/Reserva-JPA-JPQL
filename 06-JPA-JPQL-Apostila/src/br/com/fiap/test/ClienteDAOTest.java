@@ -3,7 +3,6 @@ package br.com.fiap.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,7 +18,6 @@ import br.com.fiap.dao.ClienteDAO;
 import br.com.fiap.dao.EntityManagerFactorySingleton;
 import br.com.fiap.dao.impl.ClienteDAOImpl;
 import br.com.fiap.entity.Cliente;
-import br.com.fiap.entity.Reserva;
 
 class ClienteDAOTest {
 	
@@ -82,6 +80,20 @@ class ClienteDAOTest {
 		for (Cliente cliente : lista) {
 			assertTrue(estados.contains(cliente.getEndereco().getCidade().getUf()));
 		}
+	}
+	
+	@Test
+	void buscarPorNomeSemDiferenciar() {
+		List<Cliente> lista = dao.buscaNomeSemDiferencia("T");
+		assertNotNull(lista);
+		assertEquals(2, lista.size());
+		
+	}
+	
+	@Test
+	void buscarCountClientePorEstado() {
+		int count = dao.countCliente("SP");
+		assertEquals(2, count);
 	}
 
 }
