@@ -61,18 +61,24 @@ public class ClienteDAOImpl extends GenericDAOImpl<Cliente, Integer> implements 
 
 	@Override
 	public List<Cliente> buscaNomeSemDiferencia(String nome) {
-		TypedQuery<Cliente> query = em.createQuery("from Cliente c where length(c.nome) like length(:nomeCliente)", Cliente.class);
-		query.setParameter("nomeCliente", "%" + nome + "%");
+		TypedQuery<Cliente> query = em.createQuery("from Cliente c where lower(c.nome) like lower(:nomeCliente)", Cliente.class);
+		query.setParameter("nomeCliente", "%" + nome.toLowerCase() + "%");
 
 		return query.getResultList();
 	}
 
 	@Override
-	public int countCliente(String uf) {
-		TypedQuery<Cliente> query = em.createQuery("select count(c) from Cliente c where c.endereco.cidade.uf = :estado",
-				Cliente.class);
+	public long countCliente(String uf) {
+		TypedQuery<Long> query = em.createQuery("select count(c) from Cliente c where c.endereco.cidade.uf = :estado",
+				Long.class);
 		query.setParameter("estado", uf);
-		return query.getFirstResult();
+		return query.getSingleResult();
+	}
+
+	@Override
+	public List<Cliente> buscaPorCpf(String cpf) {
+		return em.createNamedQuery("Cliente.porCpf", Cliente.class)
+				.setParameter("cpf", cpf).getResultList();
 	}
 
 }

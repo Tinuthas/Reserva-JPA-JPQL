@@ -1,10 +1,9 @@
 package br.com.fiap.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +91,18 @@ class ClienteDAOTest {
 	
 	@Test
 	void buscarCountClientePorEstado() {
-		int count = dao.countCliente("SP");
-		assertEquals(2, count);
+		long count = dao.countCliente("SP");
+		assertNotNull(count);
+	}
+	
+	@Test
+	void buscarPorCpf() {
+		List<Cliente> lista = dao.buscaPorCpf("98728018736");
+		assertNotNull(lista);
+		for (Cliente c : lista) {
+			assertEquals("98728018736", c.getCpf());
+		}
+		
 	}
 
 }

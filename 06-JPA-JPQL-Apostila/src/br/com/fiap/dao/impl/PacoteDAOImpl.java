@@ -33,9 +33,17 @@ public class PacoteDAOImpl extends GenericDAOImpl<Pacote,Integer> implements Pac
 
 	@Override
 	public double somaPrecoPacotesPorTransporte(Transporte t) {
-		TypedQuery<Pacote> query =  em.createQuery("select sum(p.preco) from Pacote p where p.transporte = :trans", Pacote.class);
+		TypedQuery<Double> query =  em.createQuery("select sum(p.preco) from Pacote p where p.transporte = :trans", Double.class);
 		query.setParameter("trans", t);
-		return query.getFirstResult();
+		return query.getSingleResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pacote> buscarPorPrecoMaximo(double preco) {
+		return em.createNativeQuery("SELECT * FROM PACOTE WHERE PRECO < :P", Pacote.class)
+				.setParameter("P", preco)
+				.getResultList();
 	}
 
 }

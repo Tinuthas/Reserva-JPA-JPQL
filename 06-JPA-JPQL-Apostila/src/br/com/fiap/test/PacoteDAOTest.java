@@ -58,5 +58,13 @@ class PacoteDAOTest {
 		double somaPreco = pacoteDao.somaPrecoPacotesPorTransporte(em.find(Transporte.class, 1));
 		assertNotNull(somaPreco);
 	}
+	
+	@Test
+	void buscarPrecoMaximo() {
+		List<Pacote> lista = pacoteDao.buscarPorPrecoMaximo(1000);
+		for (Pacote pacote : lista) {
+			assertTrue(pacote.getPreco() < 1000);
+		}
+	}
 
 }

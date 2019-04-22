@@ -20,6 +20,8 @@ public interface ClienteDAO extends GenericDAO<Cliente,Integer>{
 	
 	List<Cliente> buscaNomeSemDiferencia(String nome);
 	
-	int countCliente(String estado);
+	long countCliente(String estado);
+	
+	List<Cliente> buscaPorCpf(String cpf);
 
 }
